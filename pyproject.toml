@@ -14,7 +14,15 @@ pandas = "^2.0.0"
 pytest = "^6.2.4"
 pre-commit = "^3.7.0"
 ruff = "0.6.3"
+bandit = {version = "1.7.7", extras = ["toml"]}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.bandit]
+exclude_dirs = [
+    ".venv",
+    ".git",
+    "__pycache__",
+]
