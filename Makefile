@@ -4,7 +4,6 @@ VENV_DIR = venv
 # Define o nome do comando para o Python
 PYTHON = python3
 
-## Cria o ambiente virtual, se não existir
 .PHONY: venv
 venv:
 	@if [ ! -d "$(VENV_DIR)" ]; then \
@@ -14,20 +13,17 @@ venv:
 		echo "O ambiente virtual já existe."; \
 	fi
 
-## Instala o Poetry no ambiente virtual
 .PHONY: install-poetry
 install-poetry: venv
 	@echo "Instalando o Poetry..."
 	$(VENV_DIR)/bin/pip install poetry
 
-## Instala dependências com o Poetry
 .PHONY: install-dependencies
 install-dependencies: install-poetry
 	@echo "Instalando dependências com o Poetry..."
 	$(VENV_DIR)/bin/poetry lock
 	$(VENV_DIR)/bin/poetry install
 
-## Instala os hooks de pre-commit com o Poetry
 .PHONY: install-pre-commit
 install-pre-commit: install-dependencies
 	@echo "Instalando hooks de pre-commit"
@@ -52,6 +48,16 @@ update:
 	@echo "Atualizando pacotes com poetry"
 	$(VENV_DIR)/bin/poetry lock
 	$(VENV_DIR)/bin/poetry install
+
+## Lint usando ruff (use `make format` para formatação)
+.PHONY: lint
+lint:
+	$(VENV_DIR)/bin/poetry run ruff check
+
+## Formata o código fonte com ruff
+.PHONY: format
+format:
+	$(VENV_DIR)/bin/poetry run ruff format
 
 
 #################################################################################
