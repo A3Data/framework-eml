@@ -12,6 +12,18 @@ venv:
 	else \
 		echo "O ambiente virtual já existe."; \
 	fi
+	@if [ ! -d "data" ]; then \
+		echo "Criando pasta para os dados (essa pasta não deve ser comitada!)..."; \
+		mkdir data; \
+	else \
+		echo "A pasta de dados já existe."; \
+	fi
+	@if [ ! -d "/tmp/dvcstore" ]; then \
+		echo "Criando temporaria para dvc local (essa pasta não deve ser comitada!)..."; \
+		mkdir /tmp/dvcstore; \
+	else \
+		echo "A pasta temporaria do dvc já existe."; \
+	fi
 
 .PHONY: install-poetry
 install-poetry: venv
@@ -32,6 +44,7 @@ install-pre-commit: install-dependencies
 ## [PADRÃO] Prepara todo o repositório com o poetry e pre-commit
 .PHONY: init
 init: install-pre-commit
+	$(VENV_DIR)/bin/poetry run dvc remote add -d -f myremote /tmp/dvcstore
 
 ## Remove todo o ambiente virtual e desconfigura o pre-commit
 .PHONY: clean

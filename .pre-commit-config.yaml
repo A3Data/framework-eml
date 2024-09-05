@@ -29,4 +29,10 @@ repos:
         language: system
         pass_filenames: false
 
+      - id: dvc-push
+        name: dvc push
+        entry: venv/bin/poetry run dvc push
+        language: system
+        pass_filenames: false
+
 
