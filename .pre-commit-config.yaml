@@ -23,9 +23,9 @@ repos:
 
   - repo: local
     hooks:
-      - id: dvc-add-data
-        name: dvc add data
-        entry: venv/bin/poetry run dvc add data/
+      - id: dvc-add-artifacts
+        name: dvc add artifacts
+        entry: venv/bin/poetry run dvc add artifacts/
         language: system
         pass_filenames: false
 
@@ -34,5 +34,3 @@ repos:
         entry: venv/bin/poetry run dvc push
         language: system
         pass_filenames: false
-
-
