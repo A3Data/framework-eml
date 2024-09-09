@@ -12,9 +12,9 @@ venv:
 	else \
 		echo "O ambiente virtual já existe."; \
 	fi
-	@if [ ! -d "data" ]; then \
-		echo "Criando pasta para os dados (essa pasta não deve ser comitada!)..."; \
-		mkdir data; \
+	@if [ ! -d "artifacts" ]; then \
+		echo "Criando pasta para os artefatos (essa pasta não deve ser comitada!)..."; \
+		mkdir artifacts; \
 	else \
 		echo "A pasta de dados já existe."; \
 	fi
