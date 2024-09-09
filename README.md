@@ -54,3 +54,5 @@
 ├── pyproject.toml              # Configuração do projeto e dependências
 └── README.md                   # Documentação do repositório
 ```
+
+URL dos dados iris para teste: https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
