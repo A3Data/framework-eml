@@ -3,3 +3,5 @@
     remote = myremote
 ['remote "myremote"']
     url = /tmp/dvcstore
+['remote "s3bucket"']
+    url = s3://framework-eml-a3data/dvc/

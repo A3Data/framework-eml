@@ -44,6 +44,7 @@ install-pre-commit: install-dependencies
 ## [PADRÃO] Prepara todo o repositório com o poetry e pre-commit
 .PHONY: init
 init: install-pre-commit
+	$(VENV_DIR)/bin/poetry run dvc remote add -f s3bucket s3://framework-eml-a3data/dvc/
 	$(VENV_DIR)/bin/poetry run dvc remote add -d -f myremote /tmp/dvcstore
 
 ## Remove todo o ambiente virtual e desconfigura o pre-commit
