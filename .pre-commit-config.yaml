@@ -20,17 +20,3 @@ repos:
       - id: bandit
         args: ["-c", "pyproject.toml", "-r", "."]
         additional_dependencies: ["bandit[toml]"]
-
-  - repo: local
-    hooks:
-      - id: dvc-add-artifacts
-        name: dvc add artifacts
-        entry: venv/bin/poetry run dvc add artifacts/
-        language: system
-        pass_filenames: false
-
-      - id: dvc-push
-        name: dvc push
-        entry: venv/bin/poetry run dvc push
-        language: system
-        pass_filenames: false
