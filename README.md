@@ -66,15 +66,15 @@ Este repositório apresenta um pipeline de Machine Learning completo utilizando 
 Antes de começar, certifique-se de ter as seguintes dependências instaladas:
 
 - Python 3.8+
-- Poetry para gerenciamento de dependências
 
 ## Passo a Passo para Execução
 
 ### 1. Inicializar o ambiente virtual e instalar dependências
 
 Para configurar o ambiente de desenvolvimento e instalar todas as dependências, utilize o Makefile:
-
+```
     make init
+```
 
 Este comando executará as seguintes etapas:
 - Criará o ambiente virtual
@@ -82,29 +82,36 @@ Este comando executará as seguintes etapas:
 - Instalará as dependências do projeto
 - Configurará o pre-commit e o DVC
 
-### 2. Baixar os dados
+### 2. Entrar no ambiente virtual
 
-Após a configuração, baixe o dataset Iris com o comando:
+Para ativar o ambiente execute o comando:
 
-    python models/data/retrieve_data.py "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+```
+    source venv/bin/activate
+```
 
-Os dados serão salvos no diretório `data/raw`.
+### 3. Instale os pacotes do projeto
 
-### 3. Pré-processamento de features
+Para instalar os pacotes do projeto use:
+```
+    poetry install
+```
 
-Execute o script de pré-processamento para preparar os dados:
+### 4. Reproduzir o pipeline
 
-    python src/pipelines/features.py
+Agora com os pacotes instalados você pode reproduzir o pipeline padrão de treino.
 
-O script processa os dados e os salva em `data/processed`.
+Use a ferramenta DVC (Data Version Control) para reproduzir o pipeline:
+```
+    dvc repro
+```
 
-### 4. Treinamento do modelo
+O pipeline fica definido em dvc.yaml. Neste exemplo está definido lá para:
+1. **Baixar os dados** - Os dados serão salvos no diretório `artifacts/data/raw/data.csv`.
+2. **Processar os dados** - Os dados processados serão salvos no diretório `artifacts/data/processed/train_data.csv` e `artifacts/data/processed/test_data.csv`
+3. **Treinar o modelo** - O modelo é salvo em `artifacts/models/model.joblib`
 
-Treine o modelo utilizando o SVC com validação cruzada (5 k-fold) e faça a avaliação:
-
-    python src/pipelines/train.py
-
-O modelo treinado será salvo no diretório `models/trained`.
+O dvc é capaz de fazer o rastreamento dos arquivos que servem de entrada e de saída de cada passo do pipeline. E por isso, se voce executar o comando de novo, se nenhum arquivo sofreu alteração (inclusive os de código) ele não irá rodar novamente. Caso alguma alteração seja detectada, ele irá reproduzir do momento da alteração em diante (e.g., se alterar o processamento dos dados, ele não irá baixar os dados novamente, mas irá treinar um novo modelo).
 
 ### 5. Fazer previsões
 
@@ -114,13 +121,13 @@ Você pode realizar previsões de duas formas:
 
 Para realizar previsões em batch utilizando um arquivo CSV de entrada:
 
-    python src/pipelines/predict.py predict_batch --input-file caminho/para/arquivo.csv
+    python -m src.pipelines.predict predict_batch --input-file caminho/para/arquivo.csv
 
 #### Previsão via linha de comando
 
 Para realizar previsões passando as features diretamente pela linha de comando:
 
-    python src/pipelines/predict.py predict --sepal-length 5.1 --sepal-width 3.5 --petal-length 1.4 --petal-width 0.2
+    python -m src.pipelines.predict predict 5.1 3.5 1.4 0.2
 
 ## Comandos do Makefile
 
