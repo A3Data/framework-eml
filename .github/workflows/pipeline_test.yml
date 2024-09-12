@@ -35,5 +35,5 @@ jobs:
     - name: Executar bandit
       run: poetry run bandit -r .
 
-    # - name: Executar testes
-    #   run: poetry run pytest --cov=.
+    - name: Executar testes unitários
+      run: poetry run pytest --cov=.
