@@ -21,16 +21,25 @@ repos:
         args: ["-c", "pyproject.toml", "-r", "."]
         additional_dependencies: ["bandit[toml]"]
 
-  - repo: local
+  - repo: https://github.com/iterative/dvc
+    rev: 3.55.2
     hooks:
-      - id: dvc-add-artifacts
-        name: dvc add artifacts
-        entry: venv/bin/poetry run dvc add artifacts/
-        language: system
-        pass_filenames: false
-
-      - id: dvc-push
-        name: dvc push
-        entry: venv/bin/poetry run dvc push
-        language: system
-        pass_filenames: false
+      - id: dvc-pre-commit
+        additional_dependencies:
+          - .[all]
+        language_version: python3
+        stages:
+          - commit
+      - id: dvc-pre-push
+        additional_dependencies:
+          - .[all]
+        language_version: python3
+        stages:
+          - push
+      - id: dvc-post-checkout
+        additional_dependencies:
+          - .[all]
+        language_version: python3
+        stages:
+          - post-checkout
+        always_run: true

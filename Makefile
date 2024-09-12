@@ -29,17 +29,19 @@ venv:
 install-poetry: venv
 	@echo "Instalando o Poetry..."
 	$(VENV_DIR)/bin/pip install poetry
+	$(VENV_DIR)/bin/poetry config virtualenvs.in-project true
+
 
 .PHONY: install-dependencies
 install-dependencies: install-poetry
 	@echo "Instalando dependências com o Poetry..."
 	$(VENV_DIR)/bin/poetry lock
-	$(VENV_DIR)/bin/poetry install
+	$(VENV_DIR)/bin/poetry install --no-root
 
 .PHONY: install-pre-commit
 install-pre-commit: install-dependencies
 	@echo "Instalando hooks de pre-commit"
-	$(VENV_DIR)/bin/poetry run pre-commit install
+	$(VENV_DIR)/bin/poetry run pre-commit install --hook-type pre-push --hook-type post-checkout --hook-type pre-commit
 
 ## [PADRÃO] Prepara todo o repositório com o poetry e pre-commit
 .PHONY: init
@@ -53,6 +55,8 @@ clean:
 	@echo "Removendo pre-commit..."
 	$(VENV_DIR)/bin/poetry run pre-commit uninstall
 	$(VENV_DIR)/bin/poetry run pre-commit clean
+	@echo "Removendo poetry cache"
+	$(VENV_DIR)/bin/poetry cache clear --all -n .
 	@echo "Removendo o ambiente virtual..."
 	rm -rf $(VENV_DIR)
 
@@ -61,7 +65,7 @@ clean:
 update:
 	@echo "Atualizando pacotes com poetry"
 	$(VENV_DIR)/bin/poetry lock
-	$(VENV_DIR)/bin/poetry install
+	$(VENV_DIR)/bin/poetry install --no-root
 
 ## Lint usando ruff (use `make format` para formatação)
 .PHONY: lint

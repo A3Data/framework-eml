@@ -90,7 +90,7 @@ def predict_batch(
     """
     # Definir caminho padrão para o modelo se não for fornecido
     if model_file is None:
-        model_file = MODELS_DIR / "svc_model.joblib"
+        model_file = MODELS_DIR / "model.joblib"
 
     # Carregar o modelo
     typer.echo(f"Carregando o modelo de {model_file}...")
@@ -144,7 +144,7 @@ def predict(
     Faz predições a partir das features fornecidas diretamente via linha de comando.
     """
     if model_file is None:
-        model_file = MODELS_DIR / "svc_model.joblib"
+        model_file = MODELS_DIR / "model.joblib"
 
     typer.echo(f"Carregando o modelo de {model_file}...")
     model = load_model(model_file)
