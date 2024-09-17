@@ -1,18 +1,14 @@
 import pytest
 import pandas as pd
-from unittest.mock import patch, mock_open
 from src.pipelines.features import load_data, preprocess, preprocess_data
+from config.settings import TEST_LOAD_DATA_CSV
 
 
 def test_load_data_success():
-    # Dados CSV fictícios para simular a leitura do arquivo
-    csv_data = "5.1,3.5,1.4,0.2,setosa\n4.9,3.0,1.4,0.2,setosa"
+    # Carrega os dados usando a função load_data
+    df = load_data(TEST_LOAD_DATA_CSV)
 
-    # Usar mock_open para simular a leitura do arquivo CSV
-    with patch("builtins.open", mock_open(read_data=csv_data)):
-        df = load_data("fake_path.csv")
-
-    # Verificar se o DataFrame foi carregado corretamente
+    # DataFrame esperado
     expected_df = pd.DataFrame(
         {
             "sepal_length": [5.1, 4.9],
@@ -41,9 +37,7 @@ def test_preprocess_data_no_species_column():
         preprocess_data(df)
 
 
-def test_preprocess_failure(mocker):
-    mock_echo = mocker.patch("typer.echo")
-
+def test_preprocess_failure(capfd):
     # Chamar a função preprocess e garantir que uma exceção seja levantada
     with pytest.raises(SystemExit):
         preprocess(
@@ -51,7 +45,10 @@ def test_preprocess_failure(mocker):
             output_train_file="fake_train.csv",
             output_test_file="fake_test.csv",
         )
-    # Verificar se a mensagem de erro foi exibida
-    mock_echo.assert_called_once_with(
-        "Falha ao carregar os dados. Arquivo não encontrado.", err=True
-    )
+
+    # Capturar a saída de erro (stderr)
+    captured = capfd.readouterr()
+    print(captured)
+
+    # Verificar se a mensagem de erro está no stderr
+    assert "Falha ao carregar os dados. Arquivo não encontrado." in captured.err
