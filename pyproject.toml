@@ -35,5 +35,7 @@ exclude_dirs = [
     ".git",
     "__pycache__",
     "venv/",
-    "tests/"
 ]
+
+[tool.bandit.assert_used]
+skips = ['/test*.py']
