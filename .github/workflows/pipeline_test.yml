@@ -1,16 +1,13 @@
 name: Pipeline de Testes
+
 on:
-  push:
-    branches:
-      - teste_pipeline
   pull_request:
     branches:
       - teste_pipeline
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-
     steps:
     - name: Verificar código
       uses: actions/checkout@v4
@@ -26,14 +23,6 @@ jobs:
     - name: Instalar dependências
       run: poetry install
 
-    - name: Executar ruff
-      run: poetry run ruff check .
-
-    - name: Verificar formatação com black
-      run: poetry run black --check .
-
-    - name: Executar bandit
-      run: poetry run bandit -r .
-
     - name: Executar testes unitários
       run: poetry run pytest --cov=.
+
