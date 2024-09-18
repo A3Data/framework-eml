@@ -2,10 +2,10 @@ name: Pipeline de Qualidade de Código
 on:
   push:
     branches:
-      - teste_pipeline
+      - main
   pull_request:
     branches:
-      - teste_pipeline
+      - main
 
 jobs:
   build:
