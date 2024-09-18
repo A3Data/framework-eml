@@ -38,4 +38,4 @@ exclude_dirs = [
 ]
 
 [tool.bandit.assert_used]
-skips = ['/test*.py']
+skips = ['*/test_*.py']
