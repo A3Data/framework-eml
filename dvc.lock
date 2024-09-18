@@ -1,0 +1,54 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: python -m src.pipelines.get_data https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
+    deps:
+    - path: src/pipelines/get_data.py
+      hash: md5
+      md5: 012a5f9522c2c75e37b63281ed913a8c
+      size: 1111
+    outs:
+    - path: artifacts/data/raw/data.csv
+      hash: md5
+      md5: 42615765a885ddf54427f12c34a0a070
+      size: 4551
+  preprocess:
+    cmd: python -m src.pipelines.features
+    deps:
+    - path: artifacts/data/raw/data.csv
+      hash: md5
+      md5: 42615765a885ddf54427f12c34a0a070
+      size: 4551
+    - path: src/pipelines/features.py
+      hash: md5
+      md5: 3360c78251a70f570a4d724ed48356c1
+      size: 3912
+    outs:
+    - path: artifacts/data/processed/test_data.csv
+      hash: md5
+      md5: 66e0e99d1a4f4d977d8f900e139465ce
+      size: 2446
+    - path: artifacts/data/processed/train_data.csv
+      hash: md5
+      md5: 979b3da25bbee11562d25e9764eded6c
+      size: 9648
+  train:
+    cmd: python -m src.pipelines.train
+    deps:
+    - path: artifacts/data/processed/test_data.csv
+      hash: md5
+      md5: 66e0e99d1a4f4d977d8f900e139465ce
+      size: 2446
+    - path: artifacts/data/processed/train_data.csv
+      hash: md5
+      md5: 979b3da25bbee11562d25e9764eded6c
+      size: 9648
+    - path: src/pipelines/train.py
+      hash: md5
+      md5: f9884e6ee40fc1a7f43cd1f7a85ef90a
+      size: 4208
+    outs:
+    - path: artifacts/models/model.joblib
+      hash: md5
+      md5: ee659b34eda2fe47578785d927a3b70e
+      size: 5219
