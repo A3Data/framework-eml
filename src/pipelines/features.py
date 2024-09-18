@@ -85,37 +85,36 @@ def preprocess(
         output_train_file (str, optional): Caminho para salvar o arquivo CSV de dados de treino. Usa um valor padrão se não for fornecido.
         output_test_file (str, optional): Caminho para salvar o arquivo CSV de dados de teste. Usa um valor padrão se não for fornecido.
     """
+    # Definir caminhos padrão para os dados brutos e processados
+    if input_file is None:
+        input_file = RAW_DATA_DIR / "data.csv"
+    if output_train_file is None:
+        output_train_file = PROCESSED_DATA_DIR / "train_data.csv"
+    if output_test_file is None:
+        output_test_file = PROCESSED_DATA_DIR / "test_data.csv"
+
+    # Garantir que os diretórios existam
+    output_train_file = Path(output_train_file)
+    output_test_file = Path(output_test_file)
+    output_train_file.parent.mkdir(parents=True, exist_ok=True)
+
+    # Carregar dados
     try:
-        # Definir caminhos padrão para os dados brutos e processados
-        if input_file is None:
-            input_file = RAW_DATA_DIR / "data.csv"
-        if output_train_file is None:
-            output_train_file = PROCESSED_DATA_DIR / "train_data.csv"
-        if output_test_file is None:
-            output_test_file = PROCESSED_DATA_DIR / "test_data.csv"
-
-        # Garantir que os diretórios existam
-        output_train_file = Path(output_train_file)
-        output_test_file = Path(output_test_file)
-        output_train_file.parent.mkdir(parents=True, exist_ok=True)
-
-        # Carregar dados
         df = load_data(input_file)
-
-        # Pré-processar dados (dividir em treino/teste e escalonar)
-        train_data, test_data = preprocess_data(df)
-
-        # Salvar os conjuntos de dados pré-processados
-        train_data.to_csv(output_train_file, index=False)
-        test_data.to_csv(output_test_file, index=False)
-
-        # Mensagens de confirmação
-        typer.echo(f"Dados de treino salvos em: {output_train_file}")
-        typer.echo(f"Dados de teste salvos em: {output_test_file}")
-
     except FileNotFoundError:
         typer.echo("Falha ao carregar os dados. Arquivo não encontrado.", err=True)
         raise SystemExit(1)
+
+    # Pré-processar dados (dividir em treino/teste e escalonar)
+    train_data, test_data = preprocess_data(df)
+
+    # Salvar os conjuntos de dados pré-processados
+    train_data.to_csv(output_train_file, index=False)
+    test_data.to_csv(output_test_file, index=False)
+
+    # Mensagens de confirmação
+    typer.echo(f"Dados de treino salvos em: {output_train_file}")
+    typer.echo(f"Dados de teste salvos em: {output_test_file}")
 
 
 if __name__ == "__main__":
