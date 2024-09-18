@@ -4,6 +4,8 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 from pathlib import Path
 import typer
 from config.settings import PROCESSED_DATA_DIR, RAW_DATA_DIR
+from typing import Optional
+
 
 app = typer.Typer()
 
@@ -70,7 +72,9 @@ def preprocess_data(df: pd.DataFrame):
 
 @app.command()
 def preprocess(
-    input_file: str = None, output_train_file: str = None, output_test_file: str = None
+    input_file: Optional[str] = None,
+    output_train_file: Optional[str] = None,
+    output_test_file: Optional[str] = None,
 ):
     """
     Função principal para o pré-processamento dos dados. Carrega os dados brutos, realiza
@@ -95,7 +99,11 @@ def preprocess(
     output_train_file.parent.mkdir(parents=True, exist_ok=True)
 
     # Carregar dados
-    df = load_data(input_file)
+    try:
+        df = load_data(input_file)
+    except FileNotFoundError:
+        typer.echo("Falha ao carregar os dados. Arquivo não encontrado.", err=True)
+        raise SystemExit(1)
 
     # Pré-processar dados (dividir em treino/teste e escalonar)
     train_data, test_data = preprocess_data(df)
