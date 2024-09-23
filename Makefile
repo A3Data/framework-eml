@@ -1,8 +1,11 @@
-# Define o diretório do ambiente virtual
+# Variáveis
 VENV_DIR = venv
-
-# Define o nome do comando para o Python
 PYTHON = python3
+DOCKER_IMAGE_NAME = eml-api
+REPO_NAME = $(DOCKER_IMAGE_NAME)
+AWS_REGION = us-east-1
+ACCOUNT_ID = $(shell aws sts get-caller-identity --query Account --output text)
+REPO_URI = $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(REPO_NAME)
 
 .PHONY: venv
 venv:
@@ -76,6 +79,26 @@ lint:
 .PHONY: format
 format:
 	$(VENV_DIR)/bin/poetry run ruff format
+
+## Builda a imagem docker da API
+.PHONY: build-image
+build-image:
+	docker build -t $(DOCKER_IMAGE_NAME) -f deployment/docker/Dockerfile .
+
+## Cria repositório de imagens Docker na AWS (ECR)
+.PHONY: create-ecr
+create-ecr:
+	chmod +x deployment/scripts/create_ecr.sh
+	./deployment/scripts/create_ecr.sh $(REPO_NAME) $(AWS_REGION)
+
+## Faz o push da última versão da imagem para o repositório ECR
+.PHONY: push-image
+push-image:
+	docker tag "$(DOCKER_IMAGE_NAME):latest" "$(REPO_URI):latest"
+	aws ecr get-login-password --region "$(AWS_REGION)" | docker login --username AWS --password-stdin "$(REPO_URI)"
+	docker push "$(REPO_URI):latest"
+
+
 
 
 #################################################################################
