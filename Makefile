@@ -6,6 +6,8 @@ REPO_NAME = $(DOCKER_IMAGE_NAME)
 AWS_REGION = us-east-1
 ACCOUNT_ID = $(shell aws sts get-caller-identity --query Account --output text)
 REPO_URI = $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(REPO_NAME)
+API_PORT = 8000
+TERRAFORM_BUCKET = eml-terraform-bucket-$(ACCOUNT_ID)
 
 .PHONY: venv
 venv:
@@ -46,7 +48,7 @@ install-pre-commit: install-dependencies
 	@echo "Instalando hooks de pre-commit"
 	$(VENV_DIR)/bin/poetry run pre-commit install --hook-type pre-push --hook-type post-checkout --hook-type pre-commit
 
-## [PADRÃO] Prepara todo o repositório com o poetry e pre-commit
+## Prepara todo o repositório com o poetry e pre-commit
 .PHONY: init
 init: install-pre-commit
 	$(VENV_DIR)/bin/poetry run dvc remote add -f s3bucket s3://framework-eml-a3data/dvc/
@@ -85,7 +87,7 @@ format:
 build-image:
 	docker build -t $(DOCKER_IMAGE_NAME) -f deployment/docker/Dockerfile .
 
-## Cria repositório de imagens Docker na AWS (ECR)
+
 .PHONY: create-ecr
 create-ecr:
 	chmod +x deployment/scripts/create_ecr.sh
@@ -93,13 +95,33 @@ create-ecr:
 
 ## Faz o push da última versão da imagem para o repositório ECR
 .PHONY: push-image
-push-image:
+push-image: create-ecr
 	docker tag "$(DOCKER_IMAGE_NAME):latest" "$(REPO_URI):latest"
 	aws ecr get-login-password --region "$(AWS_REGION)" | docker login --username AWS --password-stdin "$(REPO_URI)"
 	docker push "$(REPO_URI):latest"
 
+## Inicia a API localmente
+.PHONY: api
+api: build-image
+	@echo "Lançando a API localmente..."
+	docker run -p $(API_PORT):$(API_PORT) $(DOCKER_IMAGE_NAME):latest
 
 
+.PHONY: create-bucket
+create-bucket:
+	@aws s3api head-bucket --bucket $(TERRAFORM_BUCKET) 2>/dev/null || \
+	(aws s3api create-bucket --bucket $(TERRAFORM_BUCKET) --region $(AWS_REGION); \
+	 echo "Bucket $(TERRAFORM_BUCKET) criado.")
+
+## Cria toda a infraestrutura do deploy da API, desconsiderando a parte do Docker
+.PHONY: create-infra
+create-infra: create-bucket
+	terraform -chdir="deployment/infrastructure/terraform" init -backend-config="bucket=$(TERRAFORM_BUCKET)" -backend-config="region=$(AWS_REGION)"
+	terraform -chdir="deployment/infrastructure/terraform" apply -auto-approve
+
+## Faz todo o deploy, desde de construir a imagem docker até provisionar toda infraestrutura
+.PHONY: deploy
+deploy: build-image push-image create-infra
 
 #################################################################################
 # Self Documenting Commands                                                     #

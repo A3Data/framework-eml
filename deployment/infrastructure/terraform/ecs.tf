@@ -58,6 +58,8 @@ resource "aws_ecs_service" "eml" {
   launch_type     = "EC2"
   enable_ecs_managed_tags = true
   wait_for_steady_state = true
+  deployment_maximum_percent         = 100
+  deployment_minimum_healthy_percent = 0
 
   tags = {
     Name = local.default_prefix
