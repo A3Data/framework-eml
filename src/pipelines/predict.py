@@ -60,7 +60,9 @@ def evaluate_predictions(predictions: pd.Series, true_labels: pd.Series):
     Returns:
         str: Relatório de classificação.
     """
-    return classification_report(true_labels, predictions)
+    return classification_report(
+        true_labels, predictions, output_dict=True, zero_division=0
+    )
 
 
 @app.command()
