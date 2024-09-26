@@ -7,7 +7,7 @@ from io import StringIO
 import json
 
 router = APIRouter()
-model_path = MODELS_DIR / "svc_model.joblib"
+model_path = MODELS_DIR / "model.joblib"
 
 
 @router.post("/predict", response_model=PredictionResponse)
