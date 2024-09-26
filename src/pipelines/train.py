@@ -119,7 +119,7 @@ def train(train_file: str = None, test_file: str = None, output_file: str = None
     if test_file is None:
         test_file = PROCESSED_DATA_DIR / "test_data.csv"
     if output_file is None:
-        output_file = MODELS_DIR / "svc_model.joblib"
+        output_file = MODELS_DIR / "model.joblib"
 
     # Garantir que o diretório para o modelo exista
     output_file = Path(output_file)

@@ -3,7 +3,7 @@ name: Pipeline de Testes
 on:
   pull_request:
     branches:
-      - teste_pipeline
+      - main
 
 jobs:
   test:
