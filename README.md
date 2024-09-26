@@ -163,3 +163,7 @@ O projeto inclui um Makefile para facilitar o gerenciamento do ambiente e das de
 - **make update**: Atualiza as dependências do Poetry.
 - **make lint**: Executa o lint no código-fonte com o Ruff.
 - **make format**: Formata o código-fonte com o Ruff.
+
+## Boas Práticas para Commits com Pré-commit
+
+- Durante o commit, o Pré-commit verifica e corrige a formatação do código, mas não inclui essas alterações automaticamente no commit. É necessário executar `git add` novamente para registrar essas modificações. O Git não faz isso automaticamente para que você tenha controle total sobre o que será comitado.
