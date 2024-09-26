@@ -2,7 +2,7 @@
 
 Este repositório apresenta um pipeline de Machine Learning completo utilizando o dataset Iris. Ele cobre as etapas de download de dados, pré-processamento, treinamento de modelos e predição.
 
-## Estrutura do repositório
+## Estrutura do repositório (desatualizada)
 
 ```
 ├── api                         # Código da API para interagir com o modelo
@@ -65,7 +65,16 @@ Este repositório apresenta um pipeline de Machine Learning completo utilizando 
 
 Antes de começar, certifique-se de ter as seguintes dependências instaladas:
 
-- Python 3.8+
+- WSL (caso voce esteja usando Windows):
+    - Abra um powershell e execute os comandos abaixo na ordem.
+    - `wsl --set-default-version 2`
+    - `wsl --install -d Ubuntu`
+    - `wsl --set-default Ubuntu`
+    - Daqui em diante, execute todos os comandos dentro do terminal do wsl.
+- Python 3.10+ - https://www.python.org/downloads/
+- VSCode - https://code.visualstudio.com/download
+    - O VSCode permite instalar extensões, é recomendado instalar ao menos a extensão que integra o VSCode ao WSL.
+    - Cole o seguinte ID na aba de extensões: `ms-vscode-remote.remote-wsl`
 
 ## Passo a Passo para preparar o ambiente e executar treino
 
@@ -137,17 +146,25 @@ Caso você ainda não tenha ativado, ative o ambiente virtual
     source venv/bin/activate
 ```
 
-Para lançar a API basta executar o comando do make
+Para lançar a API basta executar o comando do make, lembrando que é necessário ter o Docker instalado (https://docs.docker.com/desktop/install/windows-install/).
 ```
     make api
 ```
 
-Você pode fazer qualquer alteração nos arquivos dentro da pasta `api`, só é necessário que no arquivo main.py dentro da pasta esteja o objeto `FastAPI` com o nome `app`, que é representado pela linha:
-```
-    app = FastAPI()
-```
+Você pode fazer qualquer alteração nos arquivos dentro da pasta `api`, só é necessário que no arquivo main.py dentro da pasta esteja o objeto `FastAPI` com o nome `app`, que é representado pela linha: `app = FastAPI()`
 
+Após ficar satisfeito com a API você pode fazer o deploy dela na nuvem.
 
+Para isso, algumas ferramentas precisam ser baixadas e configuradas, faça a instalação no WSL caso esteja usando o Windows, então siga as instruções do Linux:
+    1. AWS CLI v2: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+    2. Terraform: https://developer.hashicorp.com/terraform/install?product_intent=terraform
+
+Na AWS será necessário configurar as credenciais da conta que será provisionado a infraestrutura, utilize o comando `aws configure` e coloque as chaves.
+
+Com essas configurações pontas, para fazer o deploy faça:
+```
+    make deploy
+```
 
 ## Features do repositório
 
