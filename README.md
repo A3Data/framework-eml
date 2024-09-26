@@ -206,3 +206,7 @@ make api                      Inicia a API localmente
 make create-infra             Cria toda a infraestrutura do deploy da API, desconsiderando a parte do Docker
 make deploy                   Faz todo o deploy, desde de construir a imagem docker até provisionar toda infraestrutura
 ```
+
+## Boas Práticas para Commits com Pré-commit
+
+- Durante o commit, o Pré-commit verifica e corrige a formatação do código, mas não inclui essas alterações automaticamente no commit. É necessário executar `git add` novamente para registrar essas modificações. O Git não faz isso automaticamente para que você tenha controle total sobre o que será comitado.

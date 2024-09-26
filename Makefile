@@ -1,5 +1,7 @@
-# Variáveis
-VENV_DIR = venv
+# Define o diretório do ambiente virtual
+VENV_DIR = .venv
+
+# Define o nome do comando para o Python
 PYTHON = python3
 DOCKER_IMAGE_NAME = eml-api
 REPO_NAME = $(DOCKER_IMAGE_NAME)
@@ -30,18 +32,17 @@ venv:
 		echo "A pasta temporaria do dvc já existe."; \
 	fi
 
+## Atualiza as dependências no poetry, útil quando alterar bibliotecas em pyproject.toml
 .PHONY: install-poetry
 install-poetry: venv
 	@echo "Instalando o Poetry..."
 	$(VENV_DIR)/bin/pip install poetry
 	$(VENV_DIR)/bin/poetry config virtualenvs.in-project true
 
-
 .PHONY: install-dependencies
 install-dependencies: install-poetry
 	@echo "Instalando dependências com o Poetry..."
-	$(VENV_DIR)/bin/poetry lock
-	$(VENV_DIR)/bin/poetry install --no-root
+	$(VENV_DIR)/bin/poetry install
 
 .PHONY: install-pre-commit
 install-pre-commit: install-dependencies
@@ -64,13 +65,6 @@ clean:
 	$(VENV_DIR)/bin/poetry cache clear --all -n .
 	@echo "Removendo o ambiente virtual..."
 	rm -rf $(VENV_DIR)
-
-## Atualiza as dependências no poetry, útil quando alterar bibliotecas em pyproject.toml
-.PHONY: update
-update:
-	@echo "Atualizando pacotes com poetry"
-	$(VENV_DIR)/bin/poetry lock
-	$(VENV_DIR)/bin/poetry install --no-root
 
 ## Lint usando ruff (use `make format` para formatação)
 .PHONY: lint
