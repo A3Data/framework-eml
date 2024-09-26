@@ -11,7 +11,6 @@ EXTERNAL_DATA_DIR = DATA_DIR / "external"
 INTERIM_DATA_DIR = DATA_DIR / "interim"
 
 MODELS_DIR = BASE_DIR / "artifacts" / "models"
-
 NOTEBOOKS_DIR = BASE_DIR / "notebooks"
 REPORTS_DIR = BASE_DIR / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
@@ -24,3 +23,4 @@ DEPLOYMENT_DIR = BASE_DIR / "deployment"
 DOCS_DIR = BASE_DIR / "docs"
 TESTS_DIR = BASE_DIR / "tests"
 UI_DIR = BASE_DIR / "ui"
+TEST_LOAD_DATA_CSV = TESTS_DIR / "test_load_data.csv"
