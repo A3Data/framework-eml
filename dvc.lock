@@ -21,8 +21,8 @@ stages:
       size: 4551
     - path: src/pipelines/features.py
       hash: md5
-      md5: 3360c78251a70f570a4d724ed48356c1
-      size: 3912
+      md5: cbc704ae4468467dcaa89decb3c05a17
+      size: 4136
     outs:
     - path: artifacts/data/processed/test_data.csv
       hash: md5

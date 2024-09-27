@@ -12,8 +12,9 @@ pandas = "^2.0.0"
 typer = "0.12.5"
 scikit-learn = "1.5.1"
 fastapi = "^0.114.1"
-uvicorn = "^0.30.6"
+uvicorn = {version = "^0.30.6", extras = ["standard"]}
 joblib = "^1.4.2"
+python-multipart = "^0.0.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"

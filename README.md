@@ -2,7 +2,7 @@
 
 Este repositório apresenta um pipeline de Machine Learning completo utilizando o dataset Iris. Ele cobre as etapas de download de dados, pré-processamento, treinamento de modelos e predição.
 
-## Estrutura do repositório
+## Estrutura do repositório (desatualizada)
 
 ```
 ├── api                         # Código da API para interagir com o modelo
@@ -65,7 +65,16 @@ Este repositório apresenta um pipeline de Machine Learning completo utilizando 
 
 Antes de começar, certifique-se de ter as seguintes dependências instaladas:
 
-- Python 3.8+
+- WSL (caso voce esteja usando Windows):
+    - Abra um powershell e execute os comandos abaixo na ordem.
+    - `wsl --set-default-version 2`
+    - `wsl --install -d Ubuntu`
+    - `wsl --set-default Ubuntu`
+    - Daqui em diante, execute todos os comandos dentro do terminal do wsl.
+- Python 3.10+ - https://www.python.org/downloads/
+- VSCode - https://code.visualstudio.com/download
+    - O VSCode permite instalar extensões, é recomendado instalar ao menos a extensão que integra o VSCode ao WSL.
+    - Cole o seguinte ID na aba de extensões: `ms-vscode-remote.remote-wsl`
 
 ## Passo a Passo para preparar o ambiente e executar treino
 
@@ -120,14 +129,42 @@ Você pode realizar previsões de duas formas:
 #### Previsão em batch
 
 Para realizar previsões em batch utilizando um arquivo CSV de entrada:
-
+```
     python -m src.pipelines.predict predict-batch caminho/para/arquivo.csv
-
+```
 #### Previsão via linha de comando
 
 Para realizar previsões passando as features diretamente pela linha de comando:
-
+```
     python -m src.pipelines.predict predict 5.1 3.5 1.4 0.2
+```
+
+## API - Como testar local e como fazer deploy na nuvem
+
+Caso você ainda não tenha ativado, ative o ambiente virtual
+```
+    source venv/bin/activate
+```
+
+Para lançar a API basta executar o comando do make, lembrando que é necessário ter o Docker instalado (https://docs.docker.com/desktop/install/windows-install/).
+```
+    make api
+```
+
+Você pode fazer qualquer alteração nos arquivos dentro da pasta `api`, só é necessário que no arquivo main.py dentro da pasta esteja o objeto `FastAPI` com o nome `app`, que é representado pela linha: `app = FastAPI()`
+
+Após ficar satisfeito com a API você pode fazer o deploy dela na nuvem.
+
+Para isso, algumas ferramentas precisam ser baixadas e configuradas, faça a instalação no WSL caso esteja usando o Windows, então siga as instruções do Linux:
+    1. AWS CLI v2: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+    2. Terraform: https://developer.hashicorp.com/terraform/install?product_intent=terraform
+
+Na AWS será necessário configurar as credenciais da conta que será provisionado a infraestrutura, utilize o comando `aws configure` e coloque as chaves.
+
+Com essas configurações pontas, para fazer o deploy faça:
+```
+    make deploy
+```
 
 ## Features do repositório
 
@@ -157,12 +194,18 @@ O DVC (Data Version Control) é uma ferramenta open-source que facilita o contro
 ## Comandos do Makefile
 
 O projeto inclui um Makefile para facilitar o gerenciamento do ambiente e das dependências. Alguns comandos disponíveis:
-
-- **make init**: Configura o ambiente virtual, instala as dependências e configura o pre-commit e o DVC.
-- **make clean**: Remove o ambiente virtual e desinstala o pre-commit.
-- **make update**: Atualiza as dependências do Poetry.
-- **make lint**: Executa o lint no código-fonte com o Ruff.
-- **make format**: Formata o código-fonte com o Ruff.
+```
+make init                     Prepara todo o repositório com o poetry e pre-commit
+make clean                    Remove todo o ambiente virtual e desconfigura o pre-commit
+make update                   Atualiza as dependências no poetry, útil quando alterar bibliotecas em pyproject.toml
+make lint                     Lint usando ruff (use `make format` para formatação)
+make format                   Formata o código fonte com ruff
+make build-image              Builda a imagem docker da API
+make push-image               Faz o push da última versão da imagem para o repositório ECR
+make api                      Inicia a API localmente
+make create-infra             Cria toda a infraestrutura do deploy da API, desconsiderando a parte do Docker
+make deploy                   Faz todo o deploy, desde de construir a imagem docker até provisionar toda infraestrutura
+```
 
 ## Boas Práticas para Commits com Pré-commit
 
