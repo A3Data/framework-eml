@@ -117,6 +117,11 @@ create-infra: create-bucket
 .PHONY: deploy
 deploy: build-image push-image create-infra
 
+## Deleta toda infraestrutura provisionada anteriormente
+.PHONY: destroy
+destroy:
+	terraform -chdir="deployment/infrastructure/terraform" destroy -auto-approve
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
