@@ -96,17 +96,10 @@ Este comando executará as seguintes etapas:
 Para ativar o ambiente execute o comando:
 
 ```
-    source venv/bin/activate
+    source .venv/bin/activate
 ```
 
-### 3. Instale os pacotes do projeto
-
-Para instalar os pacotes do projeto use:
-```
-    poetry install
-```
-
-### 4. Reproduzir o pipeline
+### 3. Reproduzir o pipeline
 
 Agora com os pacotes instalados você pode reproduzir o pipeline padrão de treino.
 
@@ -122,7 +115,7 @@ O pipeline fica definido em dvc.yaml. Neste exemplo está definido lá para:
 
 O dvc é capaz de fazer o rastreamento dos arquivos que servem de entrada e de saída de cada passo do pipeline. E por isso, se voce executar o comando de novo, se nenhum arquivo sofreu alteração (inclusive os de código) ele não irá rodar novamente. Caso alguma alteração seja detectada, ele irá reproduzir do momento da alteração em diante (e.g., se alterar o processamento dos dados, ele não irá baixar os dados novamente, mas irá treinar um novo modelo).
 
-### 5. Fazer previsões
+### 4. Fazer previsões
 
 Você pode realizar previsões de duas formas:
 
@@ -143,7 +136,7 @@ Para realizar previsões passando as features diretamente pela linha de comando:
 
 Caso você ainda não tenha ativado, ative o ambiente virtual
 ```
-    source venv/bin/activate
+    source .venv/bin/activate
 ```
 
 Para lançar a API basta executar o comando do make, lembrando que é necessário ter o Docker instalado (https://docs.docker.com/desktop/install/windows-install/).
