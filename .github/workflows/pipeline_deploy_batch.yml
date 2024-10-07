@@ -1,0 +1,60 @@
+name: Deploy nova versão
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       use_case:
+#         description: 'Nome do projeto (o mesmo usado para fazer o deploy da infra)'
+#         required: true
+#         default: 'eml'
+on:
+  push:
+    branches:
+      - 'feature/ci-cd-deploy'
+
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: "arn:aws:iam::127012818163:role/oidc-github-role"
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: "$AWS_REGION"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.0
+
+      - name: Create ECR
+        run: |
+            chmod +x deployment/scripts/create_ecr.sh
+            ./deployment/scripts/create_ecr.sh $REPO_NAME $AWS_REGION
+
+      - name: Build and push image
+        run: |
+            chmod +x deployment/scripts/push_image.sh
+            ./deployment/scripts/push_image.sh $DOCKER_IMAGE_NAME $AWS_REGION
+
+      - name: Create infra and deploy
+        run: |
+            chmod +x deployment/scripts/create_infra.sh
+            ./deployment/scripts/create_infra.sh $AWS_REGION
+
+env:
+    REPO_NAME: "eml-batch-repo"
+    DOCKER_IMAGE_NAME: "eml-batch-image"
+    AWS_REGION: "us-east-1"
