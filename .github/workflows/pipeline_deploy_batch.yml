@@ -1,12 +1,5 @@
-name: Deploy nova versão
+name: Pipeline de Deploy Batch
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       use_case:
-#         description: 'Nome do projeto (o mesmo usado para fazer o deploy da infra)'
-#         required: true
-#         default: 'eml'
 on:
   push:
     branches:
