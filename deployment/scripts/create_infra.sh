@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-ACCOUNT_ID=$(shell aws sts get-caller-identity --query Account --output text)
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 BUCKET_NAME="$ACCOUNT_ID-terraform-eml-batch-deploy"
 AWS_REGION=$1
 
