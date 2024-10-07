@@ -1,8 +1,3 @@
-variable "api_port" {
-  description = "Port for the FastAPI application"
-  default     = 8000
-}
-
 variable "aws_region" {
   type        = string
   default     = "us-east-1"
@@ -15,11 +10,12 @@ variable "project_name" {
   default     = "eml"
 }
 
-variable "ec2_type" {
-  description = "Tipo da instancia de ec2 para ser lançada junto do ecs"
-  type = string
-  default = "t2.small"
+variable "batch_interval" {
+  description = "Cron que irá ditar o intervalo que o batch deve rodar"
+  type        = string
+  default     = "cron(0 23 */1 * ? *)"
 }
+
 
 locals {
   tags = {
