@@ -46,7 +46,7 @@ jobs:
       - name: Build and push image
         run: |
             chmod +x deployment/scripts/push_image.sh
-            ./deployment/scripts/push_image.sh ${{ env.DOCKER_IMAGE_NAME }} ${{ env.AWS_REGION }}
+            ./deployment/scripts/push_image.sh ${{ env.REPO_NAME }} ${{ env.AWS_REGION }}
 
       - name: Create infra and deploy
         run: |
@@ -55,5 +55,4 @@ jobs:
 
 env:
     REPO_NAME: "eml-batch-repo"
-    DOCKER_IMAGE_NAME: "eml-batch-image"
     AWS_REGION: "us-east-1"
