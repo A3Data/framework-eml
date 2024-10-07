@@ -3,8 +3,7 @@ name: Pipeline de Deploy Batch
 on:
   push:
     branches:
-      - 'feature/ci-cd-deploy'
-
+      - main
 
 permissions:
   id-token: write
