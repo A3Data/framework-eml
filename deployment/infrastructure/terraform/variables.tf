@@ -16,6 +16,12 @@ variable "batch_interval" {
   default     = "cron(0 23 */1 * ? *)"
 }
 
+variable "repo_name" {
+  description = "Nome dado ao repositorio ecr para as imagens do deploy batch"
+  type        = string
+  default     = "eml-batch-repo"
+}
+
 
 locals {
   tags = {

@@ -4,7 +4,7 @@ resource "aws_cloudwatch_log_group" "ecs_service_logs" {
 }
 
 data "aws_ecr_repository" "back" {
-  name = "${local.default_prefix}-api"
+  name = "${var.repo_name}"
 }
 
 resource "aws_ecs_task_definition" "service" {
