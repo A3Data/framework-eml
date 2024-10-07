@@ -42,17 +42,17 @@ jobs:
       - name: Create ECR
         run: |
             chmod +x deployment/scripts/create_ecr.sh
-            ./deployment/scripts/create_ecr.sh $REPO_NAME $AWS_REGION
+            ./deployment/scripts/create_ecr.sh ${{ env.REPO_NAME }} ${{ env.AWS_REGION }}
 
       - name: Build and push image
         run: |
             chmod +x deployment/scripts/push_image.sh
-            ./deployment/scripts/push_image.sh $DOCKER_IMAGE_NAME $AWS_REGION
+            ./deployment/scripts/push_image.sh ${{ env.DOCKER_IMAGE_NAME }} ${{ env.AWS_REGION }}
 
       - name: Create infra and deploy
         run: |
             chmod +x deployment/scripts/create_infra.sh
-            ./deployment/scripts/create_infra.sh $AWS_REGION
+            ./deployment/scripts/create_infra.sh ${{ env.AWS_REGION }}
 
 env:
     REPO_NAME: "eml-batch-repo"
