@@ -3,7 +3,7 @@ set -e
 
 DOCKER_IMAGE_NAME=$1
 AWS_REGION=$2
-ACCOUNT_ID=$(shell aws sts get-caller-identity --query Account --output text)
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 REPO_URI="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_IMAGE_NAME"
 
 docker build -t $DOCKER_IMAGE_NAME -f deployment/docker/Dockerfile.batch .
