@@ -15,4 +15,4 @@ else
 fi
 
 terraform -chdir="deployment/infrastructure/terraform-lambda" init -backend-config="bucket=$BUCKET_NAME" -backend-config="region=$AWS_REGION"
-terraform -chdir="deployment/infrastructure/terraform-lambda" plan
+terraform -chdir="deployment/infrastructure/terraform-lambda" apply -auto-approve
