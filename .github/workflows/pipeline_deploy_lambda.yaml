@@ -45,7 +45,7 @@ jobs:
       - name: Create infra and deploy
         run: |
           chmod +x deployment/scripts/create_infra_lambda.sh
-          ./deployment/scripts/create_infra_lamba.sh ${{ env.AWS_REGION }}
+          ./deployment/scripts/create_infra_lambda.sh ${{ env.AWS_REGION }}
 
 
 env:
