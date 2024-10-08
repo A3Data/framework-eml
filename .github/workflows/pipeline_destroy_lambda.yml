@@ -1,7 +1,9 @@
 name: Pipeline de Destroy Lambda
 
 on:
-    workflow_dispatch:
+    push:
+      branches:
+        - feature/lambda
 
 permissions:
   id-token: write
