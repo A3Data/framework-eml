@@ -1,16 +1,14 @@
 name: Pipeline de Destroy Lambda
 
 on:
-    push:
-      branches:
-        - feature/lambda
+    workflow_dispatch:
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  deploy:
+  destroy:
     runs-on: ubuntu-latest
 
     steps:
