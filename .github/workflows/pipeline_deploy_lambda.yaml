@@ -1,0 +1,39 @@
+name: Pipeline de Deploy Lambda
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/lambda
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: "arn:aws:iam::340752815603:role/oidc-github-framework-eml-role"
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: "us-east-1"
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Run Terraform init
+      run: |
+        cd deployment/lambda/terraform-lambda
+        terraform init
+        terraform plan
