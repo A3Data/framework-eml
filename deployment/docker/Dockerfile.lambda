@@ -14,7 +14,7 @@ RUN poetry install --no-dev
 
 # Copiar os artefatos e o código-fonte
 COPY artifacts/ artifacts/
-COPY deployment/lambda/app/lambda_function.py ./
+COPY api/lambda/app/lambda_function.py ./
 COPY src/ src/
 COPY config/ config/
 
