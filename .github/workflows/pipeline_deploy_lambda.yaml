@@ -3,7 +3,7 @@ name: Pipeline de Deploy Lambda
 on:
   push:
     branches:
-      - feature/lambda
+      - main
 
 permissions:
   id-token: write
