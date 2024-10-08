@@ -1,0 +1,50 @@
+name: Pipeline de Deploy Batch
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: "arn:aws:iam::340752815603:role/oidc-github-framework-eml-role"
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.0
+
+      - name: Create ECR
+        run: |
+            chmod +x deployment/scripts/create_ecr.sh
+            ./deployment/scripts/create_ecr.sh ${{ env.REPO_NAME }} ${{ env.AWS_REGION }}
+
+      - name: Build and push image
+        run: |
+            chmod +x deployment/scripts/push_image.sh
+            ./deployment/scripts/push_image.sh ${{ env.REPO_NAME }} ${{ env.AWS_REGION }}
+
+      - name: Create infra and deploy
+        run: |
+            chmod +x deployment/scripts/create_infra.sh
+            ./deployment/scripts/create_infra.sh ${{ env.AWS_REGION }}
+
+env:
+    REPO_NAME: "eml-batch-repo"
+    AWS_REGION: "us-east-1"
