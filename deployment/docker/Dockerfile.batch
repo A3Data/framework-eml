@@ -1,0 +1,26 @@
+# Use a imagem base do Python
+FROM python:3.10-slim
+
+# Define a pasta de trabalho dentro do container
+WORKDIR /app
+
+# Instala o Poetry via pip
+RUN pip install poetry
+
+# Copia o arquivo pyproject.toml para instalar dependências
+COPY pyproject.toml .
+
+# Instala as dependências do projeto sem utilizar o poetry.lock
+RUN poetry lock \
+    && poetry install --no-dev
+
+COPY artifacts/ artifacts/
+COPY api/ api/
+COPY src/ src/
+COPY config/ config/
+
+ENV BATCH_INPUT_FILE="artifacts/data/raw/batch_data.csv"
+ENV BATCH_OUTPUT_FILE="artifacts/data/processed/predicted_data.csv"
+
+# Comando para rodar o script de predição em lotes
+CMD ["sh", "-c", "poetry run python -m src.pipelines.predict predict-batch $BATCH_INPUT_FILE --output-file $BATCH_OUTPUT_FILE"]
