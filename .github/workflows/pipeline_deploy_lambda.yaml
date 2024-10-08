@@ -37,6 +37,11 @@ jobs:
           chmod +x deployment/scripts/create_ecr.sh
           ./deployment/scripts/create_ecr.sh ${{ env.REPO_NAME }} ${{ env.AWS_REGION }}
 
+      - name: Build and push image
+        run: |
+          chmod +x deployment/scripts/push_image.sh
+          ./deployment/scripts/push_image.sh ${{ env.REPO_NAME }} ${{ env.AWS_REGION }}
+
 env:
   REPO_NAME: "prediction-eml"
   AWS_REGION: "us-east-1"
