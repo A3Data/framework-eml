@@ -1,7 +1,9 @@
 name: Pipeline de Deploy Batch
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   id-token: write
