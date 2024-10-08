@@ -3,9 +3,6 @@ FROM public.ecr.aws/lambda/python:3.10
 # Instalar o Poetry
 RUN pip install poetry
 
-# Definir o diretório de trabalho
-WORKDIR /var/task
-
 # Copiar arquivos de configuração do Poetry
 COPY pyproject.toml poetry.lock* ./
 
