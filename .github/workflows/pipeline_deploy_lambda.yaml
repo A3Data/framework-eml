@@ -42,6 +42,12 @@ jobs:
           chmod +x deployment/scripts/push_image.sh
           ./deployment/scripts/push_image.sh ${{ env.REPO_NAME }} ${{ env.AWS_REGION }}
 
+      - name: Create infra and deploy
+        run: |
+          chmod +x deployment/scripts/create_infra_lambda.sh
+          ./deployment/scripts/create_infra_lamba.sh ${{ env.AWS_REGION }}
+
+
 env:
   REPO_NAME: "prediction-eml"
   AWS_REGION: "us-east-1"
