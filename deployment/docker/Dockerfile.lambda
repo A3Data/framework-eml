@@ -1,0 +1,22 @@
+FROM public.ecr.aws/lambda/python:3.10
+
+# Instalar o Poetry
+RUN pip install poetry
+
+# Copiar arquivos de configuração do Poetry
+COPY pyproject.toml poetry.lock* ./
+
+# Configurar o Poetry para não criar virtualenv
+RUN poetry config virtualenvs.create false
+
+# Instalar as dependências do projeto
+RUN poetry install --no-dev
+
+# Copiar os artefatos e o código-fonte
+COPY artifacts/ artifacts/
+COPY api/lambda/app/lambda_function.py ./
+COPY src/ src/
+COPY config/ config/
+
+# Comando padrão para executar a função Lambda
+CMD ["lambda_function.lambda_handler"]
