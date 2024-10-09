@@ -35,5 +35,5 @@ jobs:
           ./deployment/scripts/destroy_infra_lambda.sh ${{ env.AWS_REGION }}
 
 env:
-  REPO_NAME: "prediction-eml"
+  REPO_NAME: "eml-online-repo"
   AWS_REGION: "us-east-1"

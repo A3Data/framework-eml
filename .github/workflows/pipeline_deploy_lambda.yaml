@@ -48,5 +48,5 @@ jobs:
 
 
 env:
-  REPO_NAME: "prediction-eml"
+  REPO_NAME: "eml-online-repo"
   AWS_REGION: "us-east-1"
