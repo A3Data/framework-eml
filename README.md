@@ -298,6 +298,9 @@ git commit -m "mensagem de commit"
 # Agora coloque uma tag para se lembrar depois, de preferencia versionamento semantico
 git tag -a "v0.1.0" -m "modelo treinado dia 11/10/24 com dataset x"
 
+# Lembre-se de mandar essa tag para o repositório remoto
+git push origin tag v0.1.0
+
 # Pronto! Agora você pode sempre voltar a esse ponto usando o comando
 git checkout v0.1.0 # Ao usar esse comando, o dvc já trará os artefatos específicos dessa versão, assim como o código do git
 
