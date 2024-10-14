@@ -5,11 +5,7 @@ VENV_DIR = .venv
 PYTHON = python3
 DOCKER_IMAGE_NAME = eml
 REPO_NAME = $(DOCKER_IMAGE_NAME)
-AWS_REGION = us-east-1
-ACCOUNT_ID = $(shell aws sts get-caller-identity --query Account --output text)
-REPO_URI = $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(REPO_NAME)
 API_PORT = 8000
-TERRAFORM_BUCKET = eml-terraform-bucket-$(ACCOUNT_ID)
 
 
 .PHONY: venv
