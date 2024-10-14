@@ -361,4 +361,4 @@ pytest --cov=.
 
 ## Boas Práticas para Commits com Pré-commit
 
-- Durante o commit, o Pré-commit verifica e corrige a formatação do código, mas não inclui essas alterações automaticamente no commit. É necessário executar `git add` novamente para registrar essas modificações. O Git não faz isso automaticamente para que você tenha controle total sobre o que será comitado.
+- Durante o commit, o Pré-commit verifica e corrige a formatação do código, mas não inclui essas alterações automaticamente no commit. É necessário executar `git add` novamente para registrar essas modificações. O Git não faz isso automaticamente para que você tenha controle total sobre o que será comitado. Então, se ao tentar dar commit aparecer um erro, verifique se não há arquivos modificados pelo pré-commit que precisam ser adicionados ao commit.
