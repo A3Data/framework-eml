@@ -329,6 +329,8 @@ Os deploys só podem ser feitos através dos pipelines do CI/CD do github. Com i
 
 - Se ficar em dúvida se o deploy vai funcionar, use os comandos do makefile que permitem voce testar localmente. São eles: `make batch` e `make api`. Eles irão rodar um container Docker da mesma forma que será executado na nuvem.
 
+- Para o deploy em si, há a necessidade de se criar uma role na AWS com OIDC. Aqui está o tutorial oficial da AWS de como criar e configurar: https://aws.amazon.com/pt/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/ . Após configurar, coloque o arn da role no arquivo yml dos pipelines de deploy batch e deploy online (lambda).
+
 ## Integração e Entrega Contínua (CI/CD)
 Detalhes dos pipelines no GitHub Actions.
 
