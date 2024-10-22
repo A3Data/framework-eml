@@ -81,11 +81,6 @@ format:
 	$(VENV_DIR)/bin/poetry run ruff format
 
 
-.PHONY: build-api-image
-build-api-image:
-	docker build -t $(DOCKER_IMAGE_NAME)-api -f deployment/docker/Dockerfile.api .
-
-
 .PHONY: build-batch-image
 build-batch-image:
 	docker build -t $(DOCKER_IMAGE_NAME)-batch -f deployment/docker/Dockerfile.batch .
@@ -94,13 +89,6 @@ build-batch-image:
 .PHONY: build-lambda-image
 build-lambda-image:
 	docker build -t $(DOCKER_IMAGE_NAME)-lambda -f deployment/docker/Dockerfile.lambda .
-
-
-## Inicia a API localmente [Docker]
-.PHONY: api
-api: build-api-image
-	@echo "Lançando a API localmente..."
-	docker run -p $(API_PORT):$(API_PORT) $(DOCKER_IMAGE_NAME)-api:latest
 
 
 ## Inicia o batch localmente [Docker]
