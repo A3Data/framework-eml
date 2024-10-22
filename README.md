@@ -233,7 +233,7 @@ make init                     Prepara todo o repositório com o poetry e pre-com
 make clean                    Remove todo o ambiente virtual e desconfigura o pre-commit
 make lint                     Lint usando ruff (use `make format` para formatação)
 make format                   Formata o código fonte com ruff
-make api                      Inicia a API localmente [Docker]
+make lambda                      Inicia o lambda localmente [Docker]
 make batch                    Inicia o batch localmente [Docker]
 ```
 
@@ -327,7 +327,7 @@ Os deploys só podem ser feitos através dos pipelines do CI/CD do github. Com i
 
 - Se assegurar de que as mudanças feitas nos códigos de inferência em `src/pipelines/predict.py` estejam sendo refletidas nos Dockerfiles, como instruído em `Inferência`.
 
-- Se ficar em dúvida se o deploy vai funcionar, use os comandos do makefile que permitem voce testar localmente. São eles: `make batch` e `make api`. Eles irão rodar um container Docker da mesma forma que será executado na nuvem.
+- Se ficar em dúvida se o deploy vai funcionar, use os comandos do makefile que permitem voce testar localmente. São eles: `make batch` e `make lambda`. Eles irão rodar um container Docker da mesma forma que será executado na nuvem.
 
 - Para o deploy em si, há a necessidade de se criar uma role na AWS com OIDC. Aqui está o tutorial oficial da AWS de como criar e configurar: https://aws.amazon.com/pt/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/ . Após configurar, coloque o arn da role no arquivo yml dos pipelines de deploy batch e deploy online (lambda).
 
