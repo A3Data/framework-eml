@@ -91,6 +91,11 @@ build-batch-image:
 	docker build -t $(DOCKER_IMAGE_NAME)-batch -f deployment/docker/Dockerfile.batch .
 
 
+.PHONY: build-lambda-image
+build-lambda-image:
+	docker build -t $(DOCKER_IMAGE_NAME)-lambda -f deployment/docker/Dockerfile.lambda .
+
+
 ## Inicia a API localmente [Docker]
 .PHONY: api
 api: build-api-image
@@ -103,6 +108,12 @@ api: build-api-image
 batch: build-batch-image
 	@echo "Lançando o batch localmente..."
 	docker run $(DOCKER_IMAGE_NAME)-batch:latest
+
+## Inicia o lambda localmente [Docker]
+.PHONY: lambda
+lambda: build-lambda-image
+	@echo "Lançando o lambda localmente..."
+	docker run -p 9000:8080 $(DOCKER_IMAGE_NAME)-lambda:latest
 
 
 #################################################################################
