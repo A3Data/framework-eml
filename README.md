@@ -329,6 +329,23 @@ Os deploys só podem ser feitos através dos pipelines do CI/CD do github. Com i
 
 - Se ficar em dúvida se o deploy vai funcionar, use os comandos do makefile que permitem voce testar localmente. São eles: `make batch` e `make lambda`. Eles irão rodar um container Docker da mesma forma que será executado na nuvem.
 
+- Após rodar o comando `make lambda`, você pode testar as predições localmente através de uma requisição HTTP para o container Docker que está rodando a função Lambda localmente. Utilize o seguinte comando `curl` para fazer isso:
+
+    ```bash
+    curl -X POST http://localhost:9000/2015-03-31/functions/function/invocations -d '[ [5.1, 3.5, 1.4, 0.2], [6.2, 2.9, 4.3, 1.3] ]'
+    ```
+
+    A resposta esperada será algo similar a:
+
+    ```json
+    {
+    "statusCode": 200,
+    "body": "[{\"prediction\": 2}, {\"prediction\": 0}]"
+    }
+    ```
+
+    Isso significa que o modelo foi executado corretamente e as predições foram realizadas para os exemplos fornecidos.
+
 - Para o deploy em si, há a necessidade de se criar uma role na AWS com OIDC. Aqui está o tutorial oficial da AWS de como criar e configurar: https://aws.amazon.com/pt/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/ . Após configurar, coloque o arn da role no arquivo yml dos pipelines de deploy batch e deploy online (lambda).
 
 ## Integração e Entrega Contínua (CI/CD)
